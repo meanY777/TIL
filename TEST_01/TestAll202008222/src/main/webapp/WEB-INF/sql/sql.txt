@@ -1,0 +1,19 @@
+create table account_tb(
+    acc_id      varchar2(30)        primary key
+    ,acc_nm      varchar2(30)        not null
+    ,acc_pw        varchar2(30)         not null
+
+);
+
+create table moneybook_tb(
+    moneybook_no    Number     primary key
+    ,acc_id         varchar2(30)    not null references account_tb(acc_id)
+    ,moneybook_memo     varchar2(1000)  not null
+    ,moneybook_type     varchar2(20)    not null
+    ,moneybook_amount      numbSer   default 0
+    ,money_indate       date        default sysdate
+
+
+);
+
+create sequence moneybook_tb_seq; 

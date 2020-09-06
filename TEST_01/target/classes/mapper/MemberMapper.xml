@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scit.test.dao.MemberMapper">
+
+<insert id="insertMember" parameterType="member">
+
+	insert into
+		member_tb
+		(
+			member_id
+			,member_pw
+			,member_nm
+			,member_birth
+		)values(
+			#{member_id}
+			,#{member_pw}
+			,#{member_nm}
+			,#{member_birth}
+		)
+		
+</insert>
+
+<select id="selectMember" resultType="member">
+
+	select
+		member_id
+		,member_nm
+		,member_birth
+		,to_char(member_indate,'YY-MM-DD')as member_indate
+	from
+		member_tb
+	order by
+		member_nm
+		
+</select>
+
+<delete id="deleteMember" parameterType="string">
+	delete from
+		member_tb
+	where
+		member_id=#{member_id}
+</delete>
+
+<select id="findMember" resultType="member" parameterType="birth">
+	select 
+		member_id
+		,member_nm
+		,member_birth
+		,to_char(member_indate,'YY-MM-DD') as member_indate
+	from
+		member_tb
+	where
+		to_char(member_indate,'YYYYMMDD') between ${min_birth} and ${max_birth}
+	order by
+		member_nm;
+	
+</select>
+</mapper>

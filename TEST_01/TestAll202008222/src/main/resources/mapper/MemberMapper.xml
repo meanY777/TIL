@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scit.test.dao.MemberMapper">
+	
+	
+	<insert id="joinMember" parameterType="member">
+	
+		insert into
+				account_tb(
+				
+				acc_id
+				,acc_nm
+				,acc_pw
+				
+				)values(
+				
+				#{acc_id}
+				,#{acc_nm}
+				,#{acc_pw}
+				
+				)
+				
+				
+	</insert>
+	
+	<select id="loginMember" parameterType="String" resultType="member">
+	
+		select 
+				acc_id
+				,acc_nm
+				,acc_pw
+		from
+				account_tb
+		where
+			acc_id=#{acc_id}
+
+
+	
+	</select>
+</mapper>
