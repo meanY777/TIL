@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scit.test.dao.MovieMapper">
+
+<insert id="insertMovie" parameterType="movie">
+
+	insert into
+		movie(
+			movie_no
+			,member_id
+			,movie_title
+			,movie_context
+
+			
+		)values(
+			seq_movie_hits.nextval
+			,#{member_id}
+			,#{movie_title}
+			,#{movie_context}
+			
+		)
+			
+			
+</insert>
+
+<select id="selectAllMovie" resultType="movie">
+	select
+			movie_no
+			,member_id
+			,movie_title
+			,movie_context
+			,movie_indate
+			,movie_hits
+	
+	from
+			movie
+	
+	
+
+</select>
+
+<select id="selectOneMovie" parameterType="int" resultType="movie">
+	select
+			movie_no
+			,member_id
+			,movie_title
+			,movie_context
+			,movie_indate
+			,movie_hits
+	
+	from
+			movie
+	where
+			movie_no = #{movie_no}
+
+</select>
+
+
+<update id="updateMovie" parameterType="movie">
+	update movie
+	
+	set
+		movie_title = #{movie_title}
+		,movie_context= #{movie_context}
+	where
+		movie_no = #{movie_no}
+</update>
+
+<delete id="deleteMovie" parameterType="int">
+
+delete from
+		movie
+where
+	movie_no=#{movie_no}
+	
+</delete>
+
+<update id ="updateHits" parameterType="int" >
+update movie
+
+set 
+	movie_hits = movie_hits+1
+where
+	movie_no = #{movie_no}
+
+</update>
+
+<select id="search" parameterType="hashmap" resultType="hashmap">
+	select
+			mo.movie_no as movie_no
+			,mo.member_id as member_id 
+			,mo.movie_title as movie_title
+			,mo.movie_context as movie_context
+			,mo.movie_indate as movie_indate
+			,mo.movie_hits as movie_hits
+			,me.member_nm as member_nm
+	
+	from
+			movie mo, member_tb2 me
+	where
+		mo.member_id= me.member_id
+	and 
+		mo.movie_no = #{movie_no}
+	<if test="searchType=='name'">
+	and
+		member_nm  like '%'||#{searchText}||'%'
+	</if>
+	<if test="searchType=='title'">
+	and
+		movie_title  like '%'||#{searchText}||'%'
+	</if>
+	
+</select>
+</mapper>
