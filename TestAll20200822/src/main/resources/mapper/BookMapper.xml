@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.scit.test.dao.BookMapper">
+		
+		
+	<insert id="bookInsert" parameterType="book">
+		insert into
+			moneybook_tb(
+				moneybook_no
+				,acc_id
+				,moneybook_memo
+				,moneybook_type
+				,moneybook_amount
+			)values(
+				moneybook_tb_seq.nextval
+				,#{acc_id}
+				,#{moneybook_memo}
+				,#{moneybook_type}
+				,#{moneybook_amount}
+			)
+			
+	</insert>
+	<select id="selectAllBook" resultType="book" parameterType="String">
+		select
+				moneybook_no
+				,acc_id
+				,moneybook_memo
+				,moneybook_type
+				,moneybook_amount
+				,to_char(money_indate,'YYYY-MM-DD')as money_indate
+		from
+			moneybook_tb
+		where
+			acc_id = #{member}
+
+		order by
+			money_indate desc	
+	</select>
+	<select id="selectOneBook" parameterType="int" resultType="book">
+		select
+				moneybook_no
+				,acc_id
+				,moneybook_memo
+				,moneybook_type
+				,moneybook_amount
+				,to_char(money_indate,'YYYY-MM-DD')as money_indate
+		from
+			moneybook_tb
+		where
+			moneybook_no =#{moneybook_no}
+		
+	</select>
+	
+	<update id="updateBook" parameterType="book">
+		update moneybook_tb
+			set
+			moneybook_memo=#{moneybook_memo}
+			,moneybook_type=#{moneybook_type}
+			,moneybook_amount=#{moneybook_amount}
+		where
+			moneybook_no=#{moneybook_no}
+	</update>
+	<delete id="deleteBook" parameterType="int">
+		delete from
+			moneybook_tb
+		where
+			moneybook_no=#{moneybook_no}
+	</delete>
+	<select id="searchBook" parameterType="map" resultType="book" >
+		select
+				moneybook_no
+				,acc_id
+				,moneybook_memo
+				,moneybook_type
+				,moneybook_amount
+				,to_char(money_indate,'YYYY-MM-DD')as money_indate
+		from
+			moneybook_tb
+		where
+			moneybook_memo like '%'||#{searchText}||'%'	
+		and
+			acc_id = #{acc_id1}
+		<if test="bookType=='수입'">
+		and
+			moneybook_type='수입'
+		</if>
+		<if test="bookType=='지출'">
+		and
+			moneybook_type='지출'
+		</if>
+		order by
+				money_indate desc
+	</select>
+	
+	<select id="tatalIncome" resultType="int" parameterType="String">	
+		select
+			sum(moneybook_amount) 
+		from
+			moneybook_tb
+		where
+			moneybook_type='수입'
+		and
+			acc_id=#{member}
+	</select>
+		<select id="tatalOutcome" resultType="int" parameterType="String">	
+		select
+			sum(moneybook_amount) 
+		from
+			moneybook_tb
+		where
+			moneybook_type='지출'
+		and
+				acc_id=#{member}
+		
+	</select>
+	<select id="min" resultType="int" parameterType="String">	
+		select
+			min(moneybook_amount) 
+		from
+			moneybook_tb
+		where
+				acc_id=#{member}
+		
+	</select>
+		<select id="max" resultType="int" parameterType="String">	
+		select
+			max(moneybook_amount) 
+		from
+			moneybook_tb
+		where
+			acc_id=#{member}
+		
+	</select>
+	
+</mapper>
